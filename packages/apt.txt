@@ -1,0 +1,52 @@
+# apt-Pakete für WSL/Ubuntu (22.04 und 24.04).
+# Ein Paket pro Zeile, Kommentare mit "#" sind erlaubt. install.sh (Schritt 3)
+# installiert nur, was noch fehlt – die Liste kann also jederzeit ergänzt werden.
+
+# --- Basis: Compiler, Netzwerk, Shell, Werkzeuge -------------------------------
+build-essential      # gcc, make & Co. – braucht pyenv zum Kompilieren von Python
+curl                 # Downloads (alle Installer-Einzeiler nutzen curl)
+wget                 # Alternative zu curl, einige Skripte erwarten es
+git                  # Versionsverwaltung
+gh                   # GitHub CLI (aus dem offiziellen GitHub-Apt-Repo, das install.sh einrichtet)
+zsh                  # unsere Shell (oh-my-zsh setzt darauf auf)
+unzip                # Archive entpacken
+zip                  # Archive erstellen
+jq                   # JSON in der Shell lesen/filtern
+tree                 # Ordnerstruktur anzeigen
+vim                  # Editor im Terminal (Notfall, git-Rebase usw.)
+make                 # Makefiles ausführen
+ca-certificates      # Root-Zertifikate für HTTPS
+locales              # locale-gen – install.sh erzeugt damit en_US.UTF-8 (LANG in zsh/zshrc)
+gnupg                # Signaturen prüfen (Apt-Repos, Git-Commits)
+direnv               # .envrc pro Projekt laden (zshrc hookt direnv automatisch ein)
+htop                 # Prozessübersicht
+tmux                 # Terminal-Multiplexer (Sitzungen laufen weiter)
+ripgrep              # sehr schnelles grep ("rg"), wird auch von Claude Code genutzt
+fd-find              # schnelles find; Binary heisst unter Ubuntu "fdfind" (zshrc setzt Alias "fd")
+bat                  # cat mit Syntax-Highlighting; Binary heisst unter Ubuntu "batcat" (zshrc setzt Alias "bat")
+python3-dev          # Header für Python-Erweiterungen (System-Python)
+python3-venv         # venv-Modul für das System-Python
+
+# --- Build-Abhängigkeiten für pyenv (Python aus Quellcode kompilieren) --------
+# Quelle: pyenv-Wiki "Suggested build environment" für Ubuntu/Debian.
+libssl-dev
+zlib1g-dev
+libbz2-dev
+libreadline-dev
+libsqlite3-dev
+libncurses-dev
+libffi-dev
+liblzma-dev
+tk-dev
+libxml2-dev
+libxmlsec1-dev
+llvm
+xz-utils
+libzstd-dev          # zstd-Kompression (Modul compression.zstd ab Python 3.14)
+
+# --- Optional (auskommentiert, bei Bedarf Zeile aktivieren und install.sh erneut starten) ---
+# postgresql-client   # psql-Kommandozeile für PostgreSQL-Datenbanken (Server läuft meist in Docker)
+# default-jdk         # Java Development Kit – nur für Java-Projekte (HSLU-Module)
+# texlive-latex-base  # LaTeX-Grundpaket – nur für Berichte/Thesis; gross (mehrere hundert MB)
+# texlive-latex-extra # zusätzliche LaTeX-Pakete (noch grösser)
+# latexmk             # LaTeX-Build-Automatisierung

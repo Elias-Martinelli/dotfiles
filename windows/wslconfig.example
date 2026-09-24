@@ -1,0 +1,40 @@
+# Vorlage für die Datei C:\Users\<Name>\.wslconfig
+# -----------------------------------------------
+# .wslconfig steuert die virtuelle Maschine, in der ALLE WSL-2-Distributionen laufen
+# (RAM, Prozessoren, Swap, Netzwerk). Die Datei liegt auf der Windows-Seite im
+# Benutzerprofil (%USERPROFILE%\.wslconfig) und existiert standardmässig nicht.
+#
+# windows/setup.ps1 kopiert diese Vorlage automatisch dorthin, falls noch keine
+# .wslconfig vorhanden ist, und ersetzt dabei die beiden Platzhalter:
+#   __MEMORY__      -> Hälfte des eingebauten RAM, auf ganze GB gerundet
+#   __PROCESSORS__  -> Hälfte der logischen Prozessorkerne, mindestens 2
+#
+# Manuell: Datei nach C:\Users\<Name>\.wslconfig kopieren und die Platzhalter durch
+# Zahlen ersetzen (z. B. memory=16GB, processors=4). Änderungen gelten erst, wenn WSL
+# komplett neu gestartet wurde: in PowerShell "wsl --shutdown" ausführen, dann Ubuntu
+# neu öffnen.
+#
+# Elias' Werte auf seinem Rechner (20 logische Kerne, 64 GB RAM): processors=16,
+# memory=52GB, swap=16GB - bewusst grosszügig, weil Data-Science-Workloads (pandas,
+# Modelltraining, Docker) in WSL laufen. Für einen Laptop mit 16 GB RAM sind
+# memory=8GB, processors=4, swap=8GB ein guter Start.
+#
+# Referenz mit allen Schlüsseln: https://learn.microsoft.com/windows/wsl/wsl-config
+
+[wsl2]
+
+# RAM-Obergrenze für die WSL-VM. Ohne Angabe nimmt WSL 50 % des Windows-RAM.
+# Einheiten: GB oder MB. Der Wert ist eine Obergrenze, kein fester Verbrauch.
+memory=__MEMORY__GB
+
+# Anzahl logischer Prozessoren für die VM. Ohne Angabe bekommt WSL alle Kerne.
+processors=__PROCESSORS__
+
+# Auslagerungsdatei (Swap) der VM. Ohne Angabe 25 % des RAM, 0 = kein Swap.
+# 8 GB reichen für die meisten Fälle; bei knappem RAM eher erhöhen.
+swap=8GB
+
+# Ports, die in WSL auf localhost lauschen (z. B. Jupyter auf :8888), sind unter Windows
+# ebenfalls über localhost:<port> erreichbar. Standard ist bereits true - die Zeile nur
+# einkommentieren, wenn du sie ausdrücklich setzen willst. Ohne Wirkung bei networkingMode=mirrored.
+# localhostForwarding=true

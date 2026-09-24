@@ -1,0 +1,28 @@
+# EditorConfig – einheitliche Formatierung in allen Editoren (VS Code liest sie via Extension,
+# viele Editoren nativ). Siehe https://editorconfig.org
+root = true
+
+# Standard für alle Dateien: UTF-8, Unix-Zeilenenden, Newline am Ende, kein Leerraum am Zeilenende
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+indent_size = 2
+
+# Shell-Skripte: 2 Leerzeichen
+[*.sh]
+indent_size = 2
+
+# Python: 4 Leerzeichen (PEP 8, ruff format)
+[*.py]
+indent_size = 4
+
+# Markdown: zwei Leerzeichen am Zeilenende sind ein harter Zeilenumbruch – nicht entfernen
+[*.md]
+trim_trailing_whitespace = false
+
+# PowerShell: 4 Leerzeichen; Zeilenenden bleiben LF (PowerShell 5+ liest LF problemlos)
+[*.ps1]
+indent_size = 4

@@ -1,0 +1,66 @@
+# Vorlage für neue Python-Projekte mit uv + ruff + pytest.
+#
+# Verwendung:
+#   1. Diese Datei in den neuen Projektordner kopieren (oder `uv init` ausführen und die
+#      [tool.*]-Abschnitte von hier übernehmen).
+#   2. `name`, `description` anpassen. Der Name ist klein, mit Bindestrichen.
+#   3. `uv sync` ausführen: legt `.venv` an, installiert `dependencies` und die dev-Gruppe,
+#      schreibt `uv.lock`.
+#   4. Pakete hinzufügen mit `uv add pandas` bzw. `uv add --dev pytest-cov`.
+#   5. Alles über uv starten: `uv run python main.py`, `uv run pytest`.
+#
+# Ausführliche Erklärung: docs/03-python.md
+
+[project]
+name = "mein-projekt"
+version = "0.1.0"
+description = "Kurze Beschreibung, was dieses Projekt tut."
+# Passt zur globalen pyenv-Version (3.12). uv wählt automatisch einen passenden Interpreter.
+requires-python = ">=3.12"
+# Laufzeit-Abhängigkeiten. Nicht von Hand pflegen, sondern mit `uv add <paket>` eintragen lassen.
+dependencies = []
+
+# Entwicklungs-Abhängigkeiten (PEP 735). Die Gruppe `dev` wird von `uv sync` standardmässig
+# mitinstalliert; `uv add --dev <paket>` trägt hier ein. ipdb ist der Debugger hinter `breakpoint()`.
+[dependency-groups]
+dev = [
+    "pytest",
+    "ipdb",
+]
+
+# ---------------------------------------------------------------------------
+# Ruff: Formatter und Linter in einem (ersetzt black, isort, flake8, pyupgrade).
+# ---------------------------------------------------------------------------
+[tool.ruff]
+# 100 Zeichen statt 88: genug Platz für sprechende Namen, passt noch nebeneinander in VS Code.
+line-length = 100
+# Zielversion für Syntax-Modernisierungen (Regel UP), z. B. `list[str]` statt `List[str]`.
+target-version = "py312"
+
+[tool.ruff.lint]
+# E   = pycodestyle-Fehler (Einrückung, Leerzeichen)
+# F   = pyflakes (unbenutzte Imports/Variablen, undefinierte Namen)
+# I   = isort (Import-Sortierung)
+# UP  = pyupgrade (moderne Syntax für die Zielversion)
+# B   = flake8-bugbear (typische Fehlerquellen, z. B. veränderliche Default-Argumente)
+# SIM = flake8-simplify (einfachere Schreibweisen)
+select = ["E", "F", "I", "UP", "B", "SIM"]
+# Beispiel, falls eine Regel stört: ignore = ["E501"]
+ignore = []
+
+[tool.ruff.format]
+# Doppelte Anführungszeichen, Leerzeichen zur Einrückung (Ruff-Standard, hier explizit).
+quote-style = "double"
+indent-style = "space"
+# Code-Beispiele in Docstrings ebenfalls formatieren.
+docstring-code-format = true
+
+# ---------------------------------------------------------------------------
+# pytest: Tests liegen in tests/, Dateien heissen test_*.py.
+# ---------------------------------------------------------------------------
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+# Projektordner in den Importpfad aufnehmen, damit Tests `from main import ...` schreiben können.
+pythonpath = ["."]
+# Kurze Ausgabe, Zusammenfassung aller nicht bestandenen Tests am Ende.
+addopts = "-q -ra"

@@ -1,0 +1,21 @@
+# Backups und Betriebssystem-Müll
+*.backup
+.DS_Store
+Thumbs.db
+*.log
+
+# Maschinenspezifische Dateien – werden von install.sh aus den *.example-Vorlagen erzeugt
+# und enthalten persönliche Werte (Name, E-Mail, lokale Pfade). Gehören NICHT ins Repo.
+git/gitconfig.local
+zsh/zshrc.local
+*.local
+
+# Geheimnisse (API-Keys, Tokens) – niemals committen
+.env
+.env.*
+
+# Persönliche Claude-Code-Einstellungen auf Projektebene
+.claude/settings.local.json
+
+# Python
+__pycache__/

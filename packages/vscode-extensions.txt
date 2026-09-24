@@ -1,0 +1,46 @@
+# VS-Code-Extensions für die WSL-Seite (Remote: WSL).
+# install.sh (Schritt 9) installiert jede Zeile mit `code --install-extension <id> --force`,
+# sofern `code --list-extensions` die ID noch nicht kennt. Leerzeilen und `#`-Kommentare werden ignoriert.
+#
+# Hinweis: `ms-vscode-remote.remote-wsl` gehört NICHT hierhin. Sie muss auf der Windows-Seite
+# installiert sein (macht windows/setup.ps1 bzw. docs/01-windows-vorbereiten.md).
+
+# --- KI (Claude primär, ChatGPT/Codex sekundär) ---
+anthropic.claude-code
+openai.chatgpt
+
+# --- Python: Sprache, Language Server, Debugger, Umgebungen, Formatter/Linter ---
+ms-python.python
+ms-python.vscode-pylance
+ms-python.debugpy
+ms-python.vscode-python-envs
+charliermarsh.ruff
+kevinrose.vsc-python-indent
+
+# --- Jupyter Notebooks ---
+ms-toolsai.jupyter
+ms-toolsai.jupyter-keymap
+ms-toolsai.jupyter-renderers
+
+# --- Daten und Konfigurationsdateien ---
+mechatroner.rainbow-csv
+tamasfe.even-better-toml
+redhat.vscode-yaml
+
+# --- Docker (funktioniert nur, wenn Docker Desktop mit WSL-Integration läuft) ---
+ms-azuretools.vscode-docker
+ms-azuretools.vscode-containers
+
+# --- Werkzeuge und Zusammenarbeit ---
+ms-vscode.makefile-tools
+ms-vsliveshare.vsliveshare
+emmanuelbeziat.vscode-great-icons
+
+# --- Optional: Git-Historie und Blame direkt im Editor (kann bei Einsteigern überfordern) ---
+eamodio.gitlens
+
+# --- Elias' Gewohnheit: Sublime-Text-Tastenkürzel. Einsteiger: diese Zeile auskommentieren. ---
+ms-vscode.sublime-keybindings
+
+# --- Projektspezifisch, standardmässig aus. Bei Bedarf einkommentieren. ---
+# mongodb.mongodb-vscode

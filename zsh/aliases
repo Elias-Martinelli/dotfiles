@@ -1,0 +1,36 @@
+# ~/.aliases – wird von install.sh nach ~/.aliases verlinkt und von zsh/zshrc geladen.
+# Hier stehen NUR Aliasse. Funktionen (z. B. update-all) und bedingte Aliasse, die eine Prüfung brauchen
+# (open, pbcopy, fd, bat), stehen in zsh/zshrc. Git-Kürzel wie gst, gco, gp, gl, glog kommen bereits
+# vom oh-my-zsh-Plugin „git" und werden hier NICHT doppelt definiert.
+
+# --- Netzwerk ---------------------------------------------------------------
+alias myip='curl https://ipinfo.io/json'   # öffentliche IP-Adresse samt Standort als JSON (nur die IP: ipinfo.io/ip)
+alias speedtest='curl -s https://raw.githubusercontent.com/sivel/speedtest-cli/master/speedtest.py | python3 -'   # Internet-Geschwindigkeit messen
+
+# --- Dateien und Verzeichnisse ---------------------------------------------
+alias ll='ls -lh'      # lange Liste mit lesbaren Grössen (überschreibt `ls -l` aus common-aliases)
+alias la='ls -lAh'     # wie ll, zusätzlich versteckte Dateien (ohne . und ..)
+alias ..='cd ..'       # ein Verzeichnis nach oben
+alias ...='cd ../..'   # zwei Verzeichnisse nach oben
+
+# --- Python (pyenv + uv + ruff) --------------------------------------------
+alias py='python3'                                 # kurz für python3
+alias venv='uv venv'                               # virtuelle Umgebung .venv im aktuellen Ordner anlegen
+alias ur='uv run'                                  # Befehl in der Projektumgebung ausführen, z. B. `ur python main.py`
+alias rf='ruff format . && ruff check --fix .'     # Code formatieren und automatisch behebbare Fehler korrigieren
+alias pt='uv run pytest'                           # Tests des Projekts laufen lassen
+
+# --- Git (nur was das oh-my-zsh-Plugin „git" nicht schon hat) ---------------
+alias gundo='git reset --soft HEAD~1'   # letzten Commit zurücknehmen, Änderungen bleiben gestaged
+alias glast='git log -1 HEAD --stat'    # letzten Commit mit geänderten Dateien anzeigen
+alias gsweep='git sweep'                # gemergte Branches lokal löschen (Alias aus git/gitconfig)
+
+# --- Dotfiles ---------------------------------------------------------------
+# Beide finden das Repo über den Symlink ~/.zshrc, funktionieren also unabhängig vom Klonpfad.
+alias dotfiles='cd "$(dirname "$(readlink -f ~/.zshrc)")/.."'   # ins dotfiles-Repo wechseln
+alias dotfiles-update='(cd "$(dirname "$(readlink -f ~/.zshrc)")/.." && git pull --ff-only && ./install.sh --links-only -y)'   # Repo aktualisieren und Symlinks nachziehen
+
+# --- KI-Werkzeuge -----------------------------------------------------------
+alias cc='claude'               # Claude Code starten (der C-Compiler bleibt als `command cc` oder `gcc` erreichbar)
+alias ccc='claude --continue'   # letzte Claude-Code-Sitzung in diesem Ordner fortsetzen
+alias cx='codex'                # OpenAI Codex CLI starten

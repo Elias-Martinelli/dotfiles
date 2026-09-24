@@ -1,0 +1,93 @@
+{
+  "[python]": {
+    "editor.tabSize": 4,
+    "editor.defaultFormatter": "charliermarsh.ruff",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll": "explicit",
+      "source.organizeImports": "explicit"
+    }
+  },
+  "[json]": {
+    "editor.tabSize": 2,
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
+  "[jsonc]": {
+    "editor.tabSize": 2,
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
+  "[markdown]": {
+    "editor.wordWrap": "on",
+    "editor.quickSuggestions": {
+      "comments": "off",
+      "strings": "off",
+      "other": "off"
+    },
+    "files.trimTrailingWhitespace": false
+  },
+  "editor.bracketPairColorization.enabled": true,
+  "editor.detectIndentation": false,
+  "editor.fontSize": 14,
+  "editor.guides.bracketPairs": true,
+  "editor.minimap.enabled": false,
+  "editor.multiCursorModifier": "ctrlCmd",
+  "editor.renderControlCharacters": true,
+  "editor.rulers": [
+    80,
+    120
+  ],
+  "editor.showFoldingControls": "always",
+  "editor.snippetSuggestions": "top",
+  "editor.tabSize": 2,
+  "files.exclude": {
+    "**/__pycache__": true,
+    "**/.pytest_cache": true,
+    "**/.ruff_cache": true,
+    "**/.mypy_cache": true,
+    "**/.ipynb_checkpoints": true,
+    "**/*.egg-info": true,
+    "**/.DS_Store": true,
+    "**/.git": true,
+    "build": true,
+    "dist": true,
+    "coverage": true,
+    "node_modules": true
+  },
+  "files.hotExit": "off",
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true,
+  "files.trimTrailingWhitespace": true,
+  "files.watcherExclude": {
+    "**/.git/objects/**": true,
+    "**/.venv/**": true,
+    "**/__pycache__/**": true,
+    "**/node_modules/**": true,
+    "**/coverage/**": true
+  },
+  "git.autofetch": true,
+  "notebook.diff.ignoreMetadata": true,
+  "notebook.lineNumbers": "on",
+  "notebook.markup.fontSize": 13,
+  "python.defaultInterpreterPath": "~/.pyenv/shims/python",
+  "python.languageServer": "Pylance",
+  "python.terminal.activateEnvironment": false,
+  "ruff.nativeServer": "on",
+  "search.exclude": {
+    "**/.venv": true,
+    "**/node_modules": true
+  },
+  "security.allowedUNCHosts": [
+    "wsl.localhost"
+  ],
+  "telemetry.telemetryLevel": "off",
+  "terminal.integrated.defaultProfile.linux": "zsh",
+  "workbench.editor.enablePreview": true,
+  "workbench.iconTheme": "vscode-great-icons",
+  "workbench.panel.defaultLocation": "right",
+  "workbench.settings.editor": "json",
+  "workbench.settings.openDefaultSettings": false,
+  "workbench.settings.useSplitJSON": false,
+  "workbench.startupEditor": "newUntitledFile"
+}

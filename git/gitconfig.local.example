@@ -1,0 +1,19 @@
+# Vorlage für ~/.gitconfig.local – deine Git-Identität. Diese Datei liegt NICHT im Repo (gitignored),
+# git/gitconfig lädt sie per [include]. install.sh kopiert die Vorlage nach ~/.gitconfig.local und ersetzt
+# die Platzhalter mit deinen Angaben; eine bestehende Datei wird nie überschrieben.
+#
+# Manuell anlegen:
+#   cp git/gitconfig.local.example ~/.gitconfig.local
+#   git config --file ~/.gitconfig.local user.name "Vorname Nachname"
+#   git config --file ~/.gitconfig.local user.email "du@example.com"
+#
+# Die E-Mail sollte zu deinem GitHub-Konto passen, damit Commits dir zugeordnet werden
+# (GitHub: Settings -> Emails; dort gibt es auch eine noreply-Adresse, falls du die echte nicht zeigen willst).
+
+[user]
+  name = __GIT_NAME__
+  email = __GIT_EMAIL__
+
+# Den [credential]-Block für github.com erzeugt `gh auth setup-git` selbst (siehe docs/06-git-github.md).
+# Er landet in ~/.gitconfig, also im Repo in git/gitconfig – das ist unkritisch, denn er enthält kein Token,
+# nur den Verweis auf den Helper `gh auth git-credential`. Nichts davon hier eintragen.

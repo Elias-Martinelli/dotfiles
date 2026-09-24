@@ -1,0 +1,7 @@
+# Globale Python-CLI-Werkzeuge, installiert mit "uv tool install <name>" (Schritt 6 in install.sh).
+# Jedes Tool landet isoliert in einer eigenen Umgebung, das Binary in ~/.local/bin.
+# Ein Tool pro Zeile, Kommentare mit "#" sind erlaubt.
+# Aktualisieren: uv tool upgrade --all   (macht auch die Funktion update-all aus der zshrc)
+
+ruff         # Linter + Formatter für Python – ersetzt flake8, isort, black; VS Code nutzt ihn beim Speichern
+pre-commit   # führt Prüfungen (z. B. ruff) automatisch vor jedem Git-Commit aus (.pre-commit-config.yaml im Projekt)

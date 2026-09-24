@@ -1,0 +1,31 @@
+# Konfiguration für die OpenAI Codex CLI.
+# install.sh verlinkt diese Datei nach ~/.codex/config.toml (nur wenn Codex installiert wird).
+#
+# Codex schreibt selbst in diese Datei (z. B. beim Modellwechsel mit /model in einer Sitzung).
+# Weil ~/.codex/config.toml ein Symlink ins Repo ist, landen solche Änderungen direkt hier:
+# danach mit `git diff` prüfen und ins Repo committen.
+#
+# Codex ist bei uns das Zweitwerkzeug (Claude Code ist primär, siehe docs/05-chatgpt-codex.md).
+# Die Datei bleibt darum absichtlich minimal: alles Folgende sind Beispiele für Schlüssel aus der
+# offiziellen Referenz (https://developers.openai.com/codex/config-reference). Zum Aktivieren die
+# Raute am Zeilenanfang entfernen. Ohne aktive Schlüssel gelten die Codex-Standardwerte.
+
+# Standardmodell. Ohne diesen Schlüssel nimmt Codex sein aktuelles Standardmodell;
+# der Wert wird gesetzt, wenn du in der Sitzung mit /model ein Modell auswählst.
+# Beispielwert aus der offiziellen Doku (Stand 2026-09):
+# model = "gpt-6-sol"
+
+# Wann Codex vor einer Aktion nachfragt.
+#   "on-request" = Codex fragt, wenn es eine Aktion ausserhalb der Sandbox braucht (Standard, empfohlen)
+#   "never"      = nie nachfragen (nicht empfohlen)
+# approval_policy = "on-request"
+
+# Wie stark das Modell «nachdenkt» (mehr = langsamer, teurer, gründlicher).
+# Erlaubte Werte: "low", "medium", "high", "xhigh", "max", "ultra" (nicht jedes Modell kann alle).
+# model_reasoning_effort = "medium"
+
+# Was Codex im Dateisystem darf, ohne zu fragen.
+#   "read-only"          = nur lesen
+#   "workspace-write"    = im Projektordner schreiben (sinnvoll für die tägliche Arbeit)
+#   "danger-full-access" = alles (nicht empfohlen)
+# sandbox_mode = "workspace-write"

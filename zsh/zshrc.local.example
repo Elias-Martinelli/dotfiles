@@ -1,0 +1,35 @@
+# Vorlage für ~/.zshrc.local – maschinenspezifische Einstellungen, die NICHT ins Repo gehören.
+# install.sh kopiert diese Datei nach ~/.zshrc.local (nur, wenn sie dort noch nicht existiert).
+# zsh/zshrc lädt ~/.zshrc.local ganz am Ende – du kannst hier also alles aus der zshrc überschreiben.
+# Manuell anlegen: cp zsh/zshrc.local.example ~/.zshrc.local
+#
+# Alle Beispiele sind auskommentiert. Zeile aktivieren: das führende `# ` entfernen, dann `exec zsh`.
+
+# --- API-Schlüssel (nie ins Repo!) ------------------------------------------
+# Für Projekte besser direnv nutzen: eine .envrc im Projektordner, dann `direnv allow`.
+# Claude Code: nur nötig, wenn du statt des Abo-Logins (Pro/Max) einen API-Key der Console verwendest.
+# export ANTHROPIC_API_KEY="<dein-API-Key-aus-der-Anthropic-Console>"
+# Codex CLI: nur nötig, wenn du statt „Sign in with ChatGPT" einen API-Key verwendest.
+# export OPENAI_API_KEY="<dein-API-Key-von-OpenAI>"
+
+# --- Zusätzliche Pfade -------------------------------------------------------
+# export PATH="$HOME/bin:$PATH"
+
+# --- Maschinenspezifische Aliasse -------------------------------------------
+# alias hslu='cd "$HOME/code/GitLab HSLU"'
+# alias projekte='cd ~/code/Elias-Martinelli'
+
+# --- Proxy (z. B. Firmen- oder Uni-Netz) ------------------------------------
+# export HTTP_PROXY="http://proxy.example.com:8080"
+# export HTTPS_PROXY="http://proxy.example.com:8080"
+# export NO_PROXY="localhost,127.0.0.1"
+
+# --- Python -----------------------------------------------------------------
+# Standard-Python-Version für uv, wenn ein Projekt keine festlegt (uv liest UV_PYTHON).
+# export UV_PYTHON=3.12
+
+# --- Abweichungen von der zshrc ---------------------------------------------
+# Anderer Editor als VS Code:
+# export EDITOR="vim"
+# Python-Version rechts im Prompt ausblenden:
+# RPROMPT=""

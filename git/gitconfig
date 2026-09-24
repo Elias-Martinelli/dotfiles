@@ -1,0 +1,94 @@
+# ~/.gitconfig – wird von install.sh nach ~/.gitconfig verlinkt (Quelle: git/gitconfig im dotfiles-Repo).
+# Enthält KEINE Identität: Name und E-Mail stehen in ~/.gitconfig.local (Vorlage: git/gitconfig.local.example),
+# die ganz unten per [include] geladen wird. Den Credential-Helper für GitHub richtet `gh auth setup-git` ein.
+
+[color]
+  branch = auto
+  diff = auto
+  interactive = auto
+  status = auto
+  ui = auto
+
+[color "branch"]
+  current = green
+  remote = yellow
+
+[core]
+  # less: -F beendet bei kurzer Ausgabe, -R Farben, -S keine Zeilenumbrüche, -X Bildschirm nicht löschen
+  pager = less -FRSX
+  # VS Code als Editor für Commit-Messages; --wait wartet, bis der Tab geschlossen ist
+  editor = code --wait
+  # CRLF aus Windows-Editoren beim Commit in LF umwandeln, beim Auschecken nichts anfassen
+  autocrlf = input
+
+[alias]
+  co = checkout
+  st = status -sb
+  br = branch
+  ci = commit
+  fo = fetch origin
+  # Diff ohne Pager (direkt im Terminal)
+  d = !git --no-pager diff
+  dt = difftool
+  # Nur die Statistik des Diffs (welche Dateien, wie viele Zeilen)
+  stat = !git --no-pager diff --stat
+
+  # Setzt remotes/origin/HEAD auf den Standard-Branch des Remotes (von https://stackoverflow.com/a/67672350/14870317)
+  remoteSetHead = remote set-head origin --auto
+
+  # Gibt den Namen des Standard-Branchs aus, z. B. main (von https://stackoverflow.com/a/67672350/14870317)
+  defaultBranch = !git symbolic-ref refs/remotes/origin/HEAD | cut -d'/' -f4
+
+  # Löscht alle lokalen Branches, die schon in den Standard-Branch gemergt sind, und räumt Remote-Referenzen auf
+  # (angepasst von https://stackoverflow.com/a/6127884/14870317; \" nötig, damit git die Anführungszeichen an die Shell durchreicht)
+  sweep = !git branch --merged $(git defaultBranch) | grep -E -v \" $(git defaultBranch)$\" | xargs -r git branch -d && git remote prune origin
+
+  # Kompakter, farbiger Verlauf aller Branches als Graph (http://www.jukie.net/bart/blog/pimping-out-git-log)
+  lg = log --graph --all --pretty=format:'%Cred%h%Creset - %s %Cgreen(%cr) %C(bold blue)%an%Creset %C(yellow)%d%Creset'
+
+  # Lokales Repo im Netz freigeben; andere klonen dann mit `git clone git://<deine-IP>/` (http://coderwall.com/p/eybtga)
+  serve = !git daemon --reuseaddr --verbose --base-path=. --export-all ./.git
+
+  # Auf den Standard-Branch wechseln (main)
+  m = !git checkout $(git defaultBranch)
+
+  # Datei aus dem Index nehmen, Änderungen im Arbeitsverzeichnis bleiben: git unstage <datei>
+  unstage = reset HEAD --
+
+[help]
+  # Vertippte Befehle nach 0,1 s automatisch korrigieren (git statsu -> git status)
+  autocorrect = 1
+
+[push]
+  # Nur den aktuellen Branch pushen
+  default = simple
+  # Beim ersten Push eines neuen Branchs den Remote automatisch setzen (kein --set-upstream mehr nötig)
+  autoSetupRemote = true
+
+[pull]
+  # Bei git pull mergen statt rebasen
+  rebase = false
+
+[fetch]
+  # Lokale Remote-Referenzen entfernen, deren Branch auf GitHub gelöscht wurde
+  prune = true
+
+[diff]
+  # Verschobene Zeilen im Diff anders einfärben als gelöschte/neue
+  colorMoved = default
+
+[merge]
+  # Konfliktmarker zeigen zusätzlich den gemeinsamen Ursprung (besser verständlich als nur beide Seiten)
+  conflictstyle = zdiff3
+
+[rerere]
+  # Einmal gelöste Merge-Konflikte merken und beim nächsten Mal automatisch anwenden
+  enabled = true
+
+[init]
+  # Neue Repos starten mit dem Branch main (GitHub-Standard) statt master
+  defaultBranch = main
+
+[include]
+  # Maschinenspezifisches ganz am Ende laden, damit es alles oben überschreiben kann. Enthält [user] name/email.
+  path = ~/.gitconfig.local

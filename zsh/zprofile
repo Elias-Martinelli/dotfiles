@@ -1,0 +1,15 @@
+# ~/.zprofile – wird von install.sh nach ~/.zprofile verlinkt (Quelle: zsh/zprofile im dotfiles-Repo).
+# Wird nur von Login-Shells gelesen (Windows Terminal startet eine). Hier stehen NUR PATH-Grundlagen;
+# alles Interaktive (Plugins, Aliasse, Funktionen) steht in zsh/zshrc.
+
+# pyenv: Verzeichnis und Binaries (nur wenn pyenv installiert ist).
+export PYENV_ROOT="$HOME/.pyenv"
+[[ -d "$PYENV_ROOT/bin" ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+
+# ~/.local/bin: uv, ruff, claude, codex.
+export PATH="$HOME/.local/bin:$PATH"
+
+# pyenv-Shims in den PATH hängen, damit `python` auf die mit `pyenv global` gewählte Version zeigt.
+if type -a pyenv > /dev/null 2>&1; then
+  eval "$(pyenv init --path)"
+fi

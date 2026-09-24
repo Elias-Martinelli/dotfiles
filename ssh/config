@@ -1,0 +1,18 @@
+# Wird von install.sh nach ~/.ssh/config verlinkt (Quelle: ssh/config im dotfiles-Repo, Rechte 600).
+# Linux-tauglich: kein UseKeychain (das gibt es nur unter macOS). Inline-Kommentare sind in ssh_config
+# nicht erlaubt, darum steht jede Erklärung in einer eigenen Zeile.
+
+# GitHub: immer als Benutzer git, mit dem ed25519-Schlüssel (erzeugen: ssh-keygen -t ed25519 -C "deine@mail.ch").
+# AddKeysToAgent lädt den Schlüssel beim ersten Gebrauch in den Agent (Passphrase nur einmal pro Sitzung).
+# IdentitiesOnly verhindert, dass ssh alle Schlüssel des Agents durchprobiert.
+Host github.com
+  User git
+  IdentityFile ~/.ssh/id_ed25519
+  AddKeysToAgent yes
+  IdentitiesOnly yes
+
+# Alle Hosts: Verbindung alle 60 s prüfen und nach 3 fehlenden Antworten trennen (verhindert eingefrorene
+# Sitzungen, wenn WSL kurz das Netz verliert oder der Laptop schläft).
+Host *
+  ServerAliveInterval 60
+  ServerAliveCountMax 3
