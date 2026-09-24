@@ -180,7 +180,7 @@ Der Installer legt keine Kopien deiner Konfiguration an, sondern **Symlinks**: V
 | `ssh/config` | `~/.ssh/config` | Symlink (`~/.ssh` mit `chmod 700`) |
 | `vscode/settings.json` | `~/.vscode-server/data/Machine/settings.json` | Symlink |
 | `claude/settings.json`, `claude/CLAUDE.md`, `claude/rules/` | `~/.claude/settings.json`, `~/.claude/CLAUDE.md`, `~/.claude/rules` | Symlinks (rules als Ordner-Link) |
-| `codex/config.toml` | `~/.codex/config.toml` | Symlink, nur wenn Codex gewünscht |
+| `codex/config.toml` | `~/.codex/config.toml` | Kopie, nur wenn Codex gewünscht und noch keine Datei vorhanden |
 
 Für jedes Ziel gilt:
 

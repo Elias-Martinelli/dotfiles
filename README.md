@@ -122,7 +122,7 @@ Sollen auch neue Pakete oder Werkzeuge installiert werden (zum Beispiel eine neu
 | `claude/settings.json` | `~/.claude/settings.json` | Symlink |
 | `claude/CLAUDE.md` | `~/.claude/CLAUDE.md` | Symlink |
 | `claude/rules/` | `~/.claude/rules` | Symlink auf den Ordner |
-| `codex/config.toml` | `~/.codex/config.toml` | Symlink, nur wenn Codex gewünscht |
+| `codex/config.toml` | `~/.codex/config.toml` | Kopie, nur wenn Codex gewünscht und noch keine Datei vorhanden (Codex schreibt rechnerspezifische Daten hinein) |
 | `wsl/wsl.conf` | `/etc/wsl.conf` | Kopie mit sudo (Schritt 11) |
 
 ### Flags und Umgebungsvariablen
@@ -139,7 +139,7 @@ Alle Flags lassen sich kombinieren.
 | `--skip-ai` | Schritt 8 (Claude Code, Codex CLI) überspringen |
 | `--skip-vscode` | Schritt 9 (VS-Code-Extensions) überspringen |
 | `--skip-wslconf` | Schritt 11 (`/etc/wsl.conf`) überspringen |
-| `--no-codex` | Codex CLI nicht installieren und nicht danach fragen; `~/.codex/config.toml` wird nur verlinkt, wenn Codex bereits installiert ist (Standard: fragen, Vorgabe Ja) |
+| `--no-codex` | Codex CLI nicht installieren und nicht danach fragen; `~/.codex/config.toml` wird nur angelegt, wenn Codex bereits installiert ist (Standard: fragen, Vorgabe Ja) |
 | `--dry-run` | Alle Aktionen nur anzeigen (`[dry-run] befehl ...`), nichts ausführen; braucht weder sudo noch Internet |
 | `-h`, `--help` | Hilfe anzeigen (deutsch) |
 
@@ -195,7 +195,7 @@ dotfiles/
 │   └── rules/
 │       └── python.md               # Regeln für Python-Dateien, gilt für **/*.py (-> ~/.claude/rules/python.md)
 ├── codex/
-│   └── config.toml                 # Codex-CLI-Konfiguration, minimal (-> ~/.codex/config.toml)
+│   └── config.toml                 # Vorlage für die Codex-CLI-Konfiguration (Kopie -> ~/.codex/config.toml)
 ├── templates/
 │   ├── pyproject.toml              # Vorlage für neue Python-Projekte (uv + ruff + pytest)
 │   └── project-CLAUDE.md           # Vorlage für ein Projekt-CLAUDE.md

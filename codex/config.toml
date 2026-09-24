@@ -1,9 +1,10 @@
 # Konfiguration für die OpenAI Codex CLI.
-# install.sh verlinkt diese Datei nach ~/.codex/config.toml (nur wenn Codex installiert wird).
+# install.sh KOPIERT diese Vorlage einmalig nach ~/.codex/config.toml (nur wenn Codex installiert wird,
+# und nur wenn dort noch keine Datei liegt).
 #
-# Codex schreibt selbst in diese Datei (z. B. beim Modellwechsel mit /model in einer Sitzung).
-# Weil ~/.codex/config.toml ein Symlink ins Repo ist, landen solche Änderungen direkt hier:
-# danach mit `git diff` prüfen und ins Repo committen.
+# Bewusst eine Kopie und kein Symlink: Codex schreibt selbst in ~/.codex/config.toml (Modellwahl mit /model,
+# Vertrauen für Projektordner mit absolutem Pfad, Hinweise der Oberfläche). Diese rechnerspezifischen Daten
+# sollen nicht im Repo landen. Soll eine Einstellung auf allen Rechnern gelten, trägst du sie hier ein.
 #
 # Codex ist bei uns das Zweitwerkzeug (Claude Code ist primär, siehe docs/05-chatgpt-codex.md).
 # Die Datei bleibt darum absichtlich minimal: alles Folgende sind Beispiele für Schlüssel aus der

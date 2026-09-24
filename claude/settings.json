@@ -26,5 +26,6 @@
   },
   "autoUpdatesChannel": "latest",
   "cleanupPeriodDays": 60,
-  "env": {}
+  "env": {},
+  "theme": "dark"
 }

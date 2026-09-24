@@ -965,11 +965,20 @@ link_file "$DOTFILES_DIR/claude/settings.json" "$HOME/.claude/settings.json"
 link_file "$DOTFILES_DIR/claude/CLAUDE.md"     "$HOME/.claude/CLAUDE.md"
 link_file "$DOTFILES_DIR/claude/rules"         "$HOME/.claude/rules"
 
-# Codex (nur wenn gewünscht oder bereits installiert)
+# Codex (nur wenn gewünscht oder bereits installiert): KOPIE statt Symlink, weil Codex
+# rechnerspezifische Daten hineinschreibt (Projekt-Vertrauen mit absolutem Pfad, TUI-Hinweise).
+CODEX_CFG="$HOME/.codex/config.toml"
 if [[ $WANT_CODEX -eq 1 ]] || have_codex; then
-  link_file "$DOTFILES_DIR/codex/config.toml" "$HOME/.codex/config.toml"
+  if [[ -L $CODEX_CFG && "$(readlink -f "$CODEX_CFG")" == "$(readlink -f "$DOTFILES_DIR/codex/config.toml")" ]]; then
+    # Umstellung von früheren Versionen dieses Repos: Symlink durch eine Kopie des aktuellen Inhalts ersetzen.
+    info "stelle ~/.codex/config.toml von Symlink auf lokale Kopie um"
+    run cp --remove-destination "$DOTFILES_DIR/codex/config.toml" "$CODEX_CFG"
+    mark_done "$(pretty "$CODEX_CFG"): Symlink durch Kopie ersetzt"
+  else
+    copy_if_missing "$DOTFILES_DIR/codex/config.toml" "$CODEX_CFG"
+  fi
 else
-  info "Codex nicht gewünscht – ~/.codex/config.toml wird nicht verlinkt"
+  info "Codex nicht gewünscht – ~/.codex/config.toml wird nicht angelegt"
 fi
 
 # ==============================================================================

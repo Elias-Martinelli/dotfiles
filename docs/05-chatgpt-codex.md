@@ -103,7 +103,7 @@ codex login status
 ```
 
 Abmelden mit `codex logout`. Die Anmeldedaten liegen in `~/.codex/auth.json` – **nicht** im Repo, `install.sh`
-verlinkt aus `~/.codex` nur die `config.toml`. CLI und VS-Code-Extension teilen sich dieselbe Anmeldung; meldest
+kopiert aus dem Repo nur die Vorlage für `config.toml` nach `~/.codex`. CLI und VS-Code-Extension teilen sich dieselbe Anmeldung; meldest
 du dich in einer ab, musst du dich in beiden neu anmelden.
 
 Alternative ohne ChatGPT-Plan: ein API-Key der OpenAI-Plattform (Abrechnung pro Token). Er gehört in
@@ -141,8 +141,11 @@ In der Sitzung beginnen Befehle wie bei Claude Code mit `/`:
 
 ## ~/.codex/config.toml
 
-`install.sh` verlinkt `~/.codex/config.toml` auf `codex/config.toml` im Repo – nur, wenn du Codex haben wolltest
-oder es bereits installiert ist. Die Datei ist absichtlich minimal: Sie enthält ausschliesslich Kommentare und
+`install.sh` legt `~/.codex/config.toml` als **Kopie** von `codex/config.toml` aus dem Repo an – nur, wenn du Codex
+haben wolltest oder es bereits installiert ist, und nur, wenn dort noch keine Datei liegt. Anders als bei Claude
+Code ist es bewusst kein Symlink: Codex schreibt rechnerspezifische Daten in die Datei (dein gewähltes Modell, das
+Vertrauen für Projektordner mit ihrem absoluten Pfad, Hinweise der Oberfläche), und die gehören nicht ins Repo.
+Die Vorlage im Repo ist absichtlich minimal: Sie enthält ausschliesslich Kommentare und
 vier **auskommentierte** Beispiele für Schlüssel aus der offiziellen Konfigurationsreferenz. Ohne aktive Schlüssel
 gelten die Codex-Standardwerte.
 
@@ -153,14 +156,10 @@ gelten die Codex-Standardwerte.
 | `model_reasoning_effort` | Wie ausführlich das Modell nachdenkt: langsamer und teurer, aber gründlicher | `"low"`, `"medium"`, `"high"`, `"xhigh"`, `"max"`, `"ultra"` – nicht jedes Modell kann alle |
 | `sandbox_mode` | Was Codex im Dateisystem ohne Rückfrage darf | `"read-only"`, `"workspace-write"` (im Projektordner schreiben, sinnvoll für den Alltag), `"danger-full-access"` (nicht empfohlen) |
 
-Zum Aktivieren die Raute am Zeilenanfang entfernen. Weil Codex bei `/model` selbst in die Datei schreibt und die
-Datei ein Symlink ins Repo ist, tauchen solche Änderungen in `git status` auf:
-
-```bash
-dotfiles && git diff codex/config.toml
-```
-
-Behalten und committen, oder mit `git checkout -- codex/config.toml` verwerfen. Weitere Schlüssel nur aufnehmen,
+Zum Aktivieren die Raute am Zeilenanfang entfernen. Für **diesen Rechner** änderst du `~/.codex/config.toml`
+direkt (oder lässt Codex das über `/model` tun). Soll eine Einstellung auf **allen** Rechnern gelten, trägst du sie
+in `codex/config.toml` im Repo ein und committest sie; auf bestehenden Rechnern überträgst du sie von Hand, weil
+der Installer eine vorhandene Datei nie überschreibt. Weitere Schlüssel nur aufnehmen,
 wenn sie in der offiziellen Referenz stehen (Link am Ende der Seite), und die Datei danach mit
 `python3 -c "import tomllib, pathlib; tomllib.loads(pathlib.Path('codex/config.toml').read_text())"` auf gültiges
 TOML prüfen.
@@ -197,7 +196,7 @@ Projekte gehören unter `~/code`, nicht nach `/mnt/c` – sonst wird Codex wie a
 | Start, Alias | `claude`, `cc` | `codex`, `cx` |
 | Sitzung fortsetzen | `claude --continue` (`ccc`), `claude --resume` | `codex resume` |
 | Einzelaufgabe ohne Sitzung | `claude -p "..."` | `codex exec "..."` |
-| Konfigurationsdatei | `~/.claude/settings.json` → `claude/settings.json` (JSON) | `~/.codex/config.toml` → `codex/config.toml` (TOML) |
+| Konfigurationsdatei | `~/.claude/settings.json` → `claude/settings.json` (JSON, Symlink ins Repo) | `~/.codex/config.toml`, einmalige Kopie von `codex/config.toml` (TOML) |
 | Anweisungen fürs Projekt | `CLAUDE.md` (erzeugt `/init`), zusätzlich `.claude/rules/` | `AGENTS.md` (erzeugt `/init`) |
 | Persönliche Anweisungen für alle Projekte | `~/.claude/CLAUDE.md` → `claude/CLAUDE.md`, `~/.claude/rules/` → `claude/rules/` | Nicht Teil unseres Repos; wir pflegen Anweisungen nur für Claude |
 | Berechtigungen | Modus (`Shift+Tab`), Regeln in `settings.json`, optional Sandbox | `/permissions`, `sandbox_mode` und `approval_policy` in `config.toml` |

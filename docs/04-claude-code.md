@@ -201,7 +201,8 @@ Schlüssel, gewinnt sie über die User-Datei.
   },
   "autoUpdatesChannel": "latest",
   "cleanupPeriodDays": 60,
-  "env": {}
+  "env": {},
+  "theme": "dark"
 }
 ```
 
@@ -219,7 +220,17 @@ Ohne diese Zeile würden Sitzungen mit einem Pro-, Max- oder Team-Abo seit Claud
 starten: Dann entscheidet eine Hintergrundprüfung statt dir, ob eine Aktion zur Aufgabe passt. Wir setzen bewusst
 Manual, damit auch Einsteiger jede Änderung sehen. Claude Code fragt dich deshalb einmal, ob es die Einstellung
 auf Auto umstellen soll. Antworte mit „Nein", wenn du bei Manual bleiben willst. Einzelne Sitzungen schaltest du
-jederzeit mit `Shift+Tab` in einen anderen Modus. Willst du dauerhaft Auto, änderst du den Wert im Repo auf `"auto"`.
+jederzeit mit `Shift+Tab` in einen anderen Modus.
+
+Willst du Auto dauerhaft, aber nur auf **deinem** Rechner (das Repo bleibt für alle anderen bei Manual):
+
+- **Terminal:** in `~/.zshrc.local` die Zeile `alias claude='claude --permission-mode auto'` eintragen, dann
+  `exec zsh`. Der Flag gewinnt über die Datei und gilt auch für die Aliasse `cc` und `ccc`.
+- **VS-Code-Extension:** einmal in der Modus-Anzeige unter dem Eingabefeld „Auto" wählen. Die Extension merkt sich
+  diese Wahl für neue Gespräche, sie hat Vorrang vor `claude/settings.json`.
+
+⚠️ Antworte auf die einmalige Frage „auf Auto umstellen?" mit **Nein**, sonst schreibt Claude Code `"auto"` über
+den Symlink in `claude/settings.json` im Repo und damit für alle Rechner.
 
 ### `permissions.allow`
 
@@ -299,6 +310,11 @@ Wie viele Tage Claude Code Sitzungsprotokolle und andere Anwendungsdaten (Transk
 aufbewahrt, bevor eine Hintergrundbereinigung sie löscht. Standard sind 30 Tage, Minimum 1 (`0` ist ungültig).
 60 Tage heisst: `claude --resume` findet Sitzungen aus den letzten zwei Monaten. Die Auto-Memory-Dateien (siehe
 unten) sind von dieser Bereinigung ausgenommen.
+
+### `theme: "dark"`
+
+Farbschema der Oberfläche im Terminal. Claude Code fragt beim ersten Start danach und speichert die Wahl hier.
+Passt `dark` nicht zu deinem Terminal, wählst du in einer Sitzung mit `/config` ein anderes Schema.
 
 ### `env: {}`
 
