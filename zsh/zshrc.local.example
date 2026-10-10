@@ -33,3 +33,15 @@
 # export EDITOR="vim"
 # Python-Version rechts im Prompt ausblenden:
 # RPROMPT=""
+
+# --- Claude Code: auf diesem Rechner immer im Auto-Modus starten -------------
+# Das Repo (claude/settings.json) bleibt bei Manual; der Flag gewinnt über die Datei und gilt auch für
+# die Aliasse cc und ccc. Funktion statt Alias, weil `claude rc` (Remote Control) den Flag NACH dem
+# Unterbefehl verlangt. Alle anderen Unterbefehle (update, doctor, mcp, ...) vertragen ihn davor.
+# Ohne Flag starten: `command claude`. Erklärung: docs/04-claude-code.md
+# claude() {
+#   case "$1" in
+#     rc|remote-control) command claude "$1" --permission-mode auto "${@:2}" ;;
+#     *) command claude --permission-mode auto "$@" ;;
+#   esac
+# }
