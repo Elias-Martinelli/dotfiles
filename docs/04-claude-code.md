@@ -175,8 +175,9 @@ Schlüssel, gewinnt sie über die User-Datei.
 ```json
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "cleanupPeriodDays": 60,
+  "env": {},
   "permissions": {
-    "defaultMode": "default",
     "allow": [
       "Bash(git status *)",
       "Bash(git diff *)",
@@ -197,12 +198,17 @@ Schlüssel, gewinnt sie über die User-Datei.
       "Read(~/.ssh/**)",
       "Read(~/.claude.json)",
       "Bash(rm -rf /*)"
-    ]
+    ],
+    "defaultMode": "default"
   },
   "autoUpdatesChannel": "latest",
-  "cleanupPeriodDays": 60,
-  "env": {},
-  "theme": "dark"
+  "theme": "dark",
+  "tui": "fullscreen",
+  "attribution": {
+    "commit": "",
+    "pr": "",
+    "sessionUrl": false
+  }
 }
 ```
 
@@ -224,8 +230,11 @@ jederzeit mit `Shift+Tab` in einen anderen Modus.
 
 Willst du Auto dauerhaft, aber nur auf **deinem** Rechner (das Repo bleibt für alle anderen bei Manual):
 
-- **Terminal:** in `~/.zshrc.local` die Zeile `alias claude='claude --permission-mode auto'` eintragen, dann
-  `exec zsh`. Der Flag gewinnt über die Datei und gilt auch für die Aliasse `cc` und `ccc`.
+- **Terminal:** in `~/.zshrc.local` die vorbereitete Funktion `claude()` aktivieren (steht auskommentiert in
+  der Vorlage `zsh/zshrc.local.example`, Rauten entfernen), dann `exec zsh`. Sie hängt `--permission-mode auto`
+  an jeden Aufruf; der Flag gewinnt über die Datei und gilt auch für die Aliasse `cc` und `ccc`. Eine Funktion
+  statt eines einfachen Alias, weil `claude rc` (Remote Control) den Flag erst **nach** dem Unterbefehl
+  akzeptiert. Einmal ohne Auto starten: `command claude`.
 - **VS-Code-Extension:** einmal in der Modus-Anzeige unter dem Eingabefeld „Auto" wählen. Die Extension merkt sich
   diese Wahl für neue Gespräche, sie hat Vorrang vor `claude/settings.json`.
 
@@ -275,13 +284,10 @@ oder in `~/.zshrc.local`.
 
 ### Zuschreibung in Commits und Pull Requests (`attribution`)
 
-Claude Code hängt an Commits, die es selbst erstellt, standardmässig den Trailer
+Ohne Einstellung hängt Claude Code an Commits, die es selbst erstellt, den Trailer
 `Co-Authored-By: <Modellname> <noreply@anthropic.com>` an und ergänzt Pull-Request-Beschreibungen um
-`🤖 Generated with [Claude Code](https://claude.com/claude-code)`. Diesen Standard lassen wir bewusst aktiv
-(deshalb steht dazu nichts in unserer `settings.json`): So bleibt transparent, welche Commits mit Claude entstanden sind.
-
-Willst du die Zuschreibung ändern oder ausblenden, setzt du im Repo (`claude/settings.json`) den Schlüssel
-`attribution`. Leere Strings blenden den jeweiligen Teil aus:
+`🤖 Generated with [Claude Code](https://claude.com/claude-code)`. Wir schalten beides **aus**: Als Autor
+erscheinst nur du (so steht es auch in `claude/CLAUDE.md`). Leere Strings blenden den jeweiligen Teil aus:
 
 ```json
 {
@@ -294,6 +300,7 @@ Willst du die Zuschreibung ändern oder ausblenden, setzt du im Repo (`claude/se
 ```
 
 `sessionUrl` betrifft nur Commits aus Cloud- oder Remote-Control-Sitzungen (Link auf die claude.ai-Sitzung).
+Willst du die Zuschreibung wieder haben, löschst du den Block `attribution` in `claude/settings.json`.
 Der ältere Schlüssel `includeCoAuthoredBy` ist seit Version 2.0.62 veraltet und durch `attribution` ersetzt –
 in neuen Konfigurationen nicht mehr verwenden.
 
@@ -310,6 +317,11 @@ Wie viele Tage Claude Code Sitzungsprotokolle und andere Anwendungsdaten (Transk
 aufbewahrt, bevor eine Hintergrundbereinigung sie löscht. Standard sind 30 Tage, Minimum 1 (`0` ist ungültig).
 60 Tage heisst: `claude --resume` findet Sitzungen aus den letzten zwei Monaten. Die Auto-Memory-Dateien (siehe
 unten) sind von dieser Bereinigung ausgenommen.
+
+### `tui: "fullscreen"`
+
+Claude Code zeichnet die Sitzung als flimmerfreie Vollbild-Oberfläche im Terminal (mit eigenem Scrollverlauf).
+Zurück zur klassischen Darstellung in einer Sitzung mit `/tui default`.
 
 ### `theme: "dark"`
 
@@ -524,8 +536,8 @@ Conventional-Commit-Message.
 ```
 
 Claude schlägt die Message vor (Präfixe `feat:`, `fix:`, `docs:`, `chore:`, `refactor:`, `test:` wie in
-[06-git-github.md](06-git-github.md)), fragt vor dem `git commit` nach und hängt den Trailer `Co-Authored-By`
-an (Standard-Zuschreibung, siehe Abschnitt `attribution` oben).
+[06-git-github.md](06-git-github.md)), fragt vor dem `git commit` nach und hängt dank `attribution` (siehe oben) keinen
+`Co-Authored-By`-Trailer an.
 
 **Pull Request erstellen lassen:** `gh` ist eingeloggt, Claude kann es benutzen:
 

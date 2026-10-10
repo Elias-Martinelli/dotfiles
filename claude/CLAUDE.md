@@ -40,6 +40,7 @@
 - Vor einem Commit: `git status` und `git diff` ansehen und mir zusammenfassen, was committet wird.
 - Nur committen, wenn ich es ausdrücklich verlange. Nie `git push --force` auf `main` oder `master`.
 - Keine Dateien mit Geheimnissen committen (`.env`, Tokens, Schlüssel, `credentials*.json`). Wenn du eines siehst, warne mich.
+- Keine Claude-Attribution: keine `Co-Authored-By: Claude …`-Zeile in Commits, kein «Generated with Claude Code» in PR-Beschreibungen. Als Autor erscheine nur ich (oder Teammitglieder wie Timo).
 - Standard-Branch für neue Repos heisst `main`. Pull Requests erstelle ich mit `gh pr create`.
 
 ## Meine Umgebung
