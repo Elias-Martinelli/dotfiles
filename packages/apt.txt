@@ -18,6 +18,8 @@ make                 # Makefiles ausführen
 ca-certificates      # Root-Zertifikate für HTTPS
 locales              # locale-gen – install.sh erzeugt damit en_US.UTF-8 (LANG in zsh/zshrc)
 gnupg                # Signaturen prüfen (Apt-Repos, Git-Commits)
+bubblewrap           # Sandbox für Codex (sonst Fehler beim Start der VS-Code-Extension) und Claude Code /sandbox
+socat                # Netzwerk-Proxy für die Sandbox von Claude Code
 direnv               # .envrc pro Projekt laden (zshrc hookt direnv automatisch ein)
 htop                 # Prozessübersicht
 tmux                 # Terminal-Multiplexer (Sitzungen laufen weiter)

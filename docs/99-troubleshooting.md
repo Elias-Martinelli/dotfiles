@@ -21,6 +21,7 @@ Diese Seite ist zum Nachschlagen: Du hast eine Fehlermeldung, suchst sie in der 
 | Uhrzeit in Ubuntu falsch (nach Standby) | Uhr der WSL-VM ist stehen geblieben | `sudo hwclock -s` → [Details](#uhrzeit-in-ubuntu-falsch) |
 | Kein Internet in Ubuntu, `Temporary failure in name resolution` | DNS-Auflösung in WSL gestört (oft wegen VPN) | `wsl --shutdown`, VPN trennen, `/etc/resolv.conf` prüfen → [Details](#kein-internet-in-ubuntu-temporary-failure-in-name-resolution) |
 | `~/.claude/settings.json` (oder `~/.zshrc`, `~/.gitconfig`) ist keine Verknüpfung mehr | ein Programm hat den Symlink durch eine echte Datei ersetzt | Unterschiede ins Repo übernehmen, `./install.sh --links-only` → [Details](#eine-konfigurationsdatei-ist-keine-verknüpfung-mehr) |
+| VS Code meldet `command 'chatgpt.openSidebar' not found`; das Codex-Panel bleibt leer | Codex-Extension fehlt auf der Seite des Fensters (Windows statt WSL) oder findet `bubblewrap` nicht | Extension auf beiden Seiten installieren, `sudo apt-get install bubblewrap` → [Details](#vs-code-command-chatgptopensidebar-not-found) |
 | Ich will alles zurücksetzen | – | Backup-Ordner, `./install.sh` erneut oder `wsl --unregister` → [Details](#alles-zurücksetzen) |
 
 ## zsh startet mit dem Menü zsh-newuser-install
@@ -383,6 +384,26 @@ wsl --shutdown
    ```
 
    Rückgängig machen: die zwei Zeilen aus `/etc/wsl.conf` entfernen, `/etc/resolv.conf` löschen, in der PowerShell `wsl --shutdown`.
+
+## VS Code: command 'chatgpt.openSidebar' not found
+
+**Symptom.** Ein Klick auf das Codex-Symbol (oder der Befehl „Codex: Open Sidebar") meldet `command 'chatgpt.openSidebar' not found`, oder das Codex-Panel bleibt leer.
+
+**Ursache.** Zwei Möglichkeiten:
+
+1. Das Fenster läuft auf der **Windows-Seite** (unten links steht kein `WSL: Ubuntu-24.04`), dort ist die Extension `openai.chatgpt` aber nicht installiert. Auf der Windows-Seite liegt oft nur ihr Begleiter „Codex Audio", der den Befehl aufruft.
+2. Im **WSL-Fenster** startet Codex seinen Hintergrunddienst nicht, weil `bubblewrap` fehlt. Im Ausgabefenster „Codex" steht dann `Codex could not find bubblewrap on PATH`.
+
+**Lösung.**
+
+- Für Fall 1: In VS Code die Extensions-Ansicht öffnen (Ctrl + Shift + X), „Codex" suchen und bei „Codex – OpenAI's coding agent" auf „Install" klicken. In einem WSL-Fenster bietet VS Code zusätzlich „Install in WSL: Ubuntu-24.04" an. `windows/setup.ps1` installiert die Extension auf der Windows-Seite automatisch.
+- Für Fall 2: im Ubuntu-Terminal bubblewrap installieren (steht in `packages/apt.txt`):
+
+  ```bash
+  sudo apt-get install -y bubblewrap
+  ```
+
+- Danach in VS Code Ctrl + Shift + P → „Developer: Reload Window".
 
 ## Eine Konfigurationsdatei ist keine Verknüpfung mehr
 
