@@ -49,6 +49,7 @@ SKIP_AI=0
 SKIP_VSCODE=0
 SKIP_WSLCONF=0
 NO_CODEX=0
+GROK_FLAG=""   # "" = fragen, yes = --grok, no = --no-grok
 DRY_RUN=0
 
 # Laufzeit-Zustand
@@ -56,6 +57,7 @@ DRY_RUN=0
 : "${USER:=$(id -un)}"
 IS_WSL=0
 WANT_CODEX=1
+WANT_GROK=0
 WANT_WSLCONF=1
 BACKUP_USED=0
 WSLCONF_WRITTEN=0
@@ -246,6 +248,8 @@ ${C_BOLD}Optionen (kombinierbar):${C_RESET}
   --skip-vscode     Schritt 9 (VS-Code-Extensions) überspringen
   --skip-wslconf    Schritt 11 (/etc/wsl.conf) überspringen
   --no-codex        Codex CLI nicht installieren (Standard: fragen, Vorgabe Ja)
+  --grok            Grok CLI (xAI) ohne Rückfrage installieren (Standard: fragen, Vorgabe Nein)
+  --no-grok         Grok CLI nicht installieren und nicht danach fragen
   --dry-run         alle Aktionen nur anzeigen ([dry-run] ...), nichts ausführen;
                     braucht weder sudo noch Netz und schreibt nichts
   -h, --help        diese Hilfe anzeigen
@@ -288,6 +292,8 @@ while [[ $# -gt 0 ]]; do
     --skip-vscode)   SKIP_VSCODE=1 ;;
     --skip-wslconf)  SKIP_WSLCONF=1 ;;
     --no-codex)      NO_CODEX=1; WANT_CODEX=0 ;;
+    --grok)          GROK_FLAG=yes ;;
+    --no-grok)       GROK_FLAG=no ;;
     --dry-run)       DRY_RUN=1 ;;
     -h|--help)       usage; DELIBERATE_EXIT=1; exit 0 ;;
     *)
@@ -327,6 +333,11 @@ compute_apt_missing() {
 }
 
 # Codex vorhanden? Auch eine npm-Installation im nvm-Ordner zählt (die liegt nicht im PATH des Skripts).
+# Grok CLI vorhanden? Der Installer legt das Binary nach ~/.grok/bin (Link in ~/.local/bin).
+have_grok() {
+  command -v grok >/dev/null 2>&1 || [[ -x $HOME/.grok/bin/grok ]]
+}
+
 have_codex() {
   command -v codex >/dev/null 2>&1 || compgen -G "${NVM_DIR:-$HOME/.nvm}/versions/node/*/bin/codex" >/dev/null
 }
@@ -536,10 +547,27 @@ if [[ $SKIP_AI -eq 0 && $NO_CODEX -eq 0 ]]; then
     info "Codex CLI: nein"
   fi
 fi
+# Grok CLI (xAI)? Vorgabe Nein: Einsteiger bekommen es nur, wenn sie ausdrücklich Ja sagen.
+if [[ $SKIP_AI -eq 0 && $GROK_FLAG != no ]]; then
+  if have_grok; then
+    WANT_GROK=1
+    ok "Grok CLI ist bereits installiert – keine Frage"
+  elif [[ $GROK_FLAG == yes ]]; then
+    WANT_GROK=1
+    ok "Grok CLI: ja (--grok)"
+  elif ask_yes_no "Grok CLI (xAI) zusätzlich installieren?" n; then
+    WANT_GROK=1
+    ok "Grok CLI: ja"
+  else
+    info "Grok CLI: nein"
+  fi
+fi
+
 # Ohne Schritt 8 (--skip-ai, --links-only) wird Codex in diesem Lauf nicht installiert:
 # dann zählt in Schritt 10 und 12 nur, ob codex bereits vorhanden ist.
 if [[ $SKIP_AI -eq 1 ]]; then
   WANT_CODEX=0
+  WANT_GROK=0
 fi
 
 # /etc/wsl.conf?
@@ -874,6 +902,23 @@ else
       fi
     fi
   fi
+
+  # Grok CLI (xAI) – optional, nie mit sudo.
+  # SHELL=/bin/sh: Der Installer hängt sonst einen PATH-Block an ~/.zshrc an und folgt dabei dem
+  # Symlink ins Repo (plus .bak-Datei und zweitem compinit). zsh/zshrc setzt ~/.grok/bin selbst.
+  if [[ $WANT_GROK -eq 0 ]]; then
+    info "Grok CLI: übersprungen (nicht gewünscht)"
+  elif have_grok; then
+    ok "übersprungen (bereits vorhanden): Grok CLI"
+  else
+    info "installiere Grok CLI (xAI)"
+    if run_sh "curl -fsSL https://x.ai/cli/install.sh | SHELL=/bin/sh bash"; then
+      mark_done "Grok CLI installiert"
+    else
+      warn "Grok-Installer fehlgeschlagen – später manuell: curl -fsSL https://x.ai/cli/install.sh | SHELL=/bin/sh bash"
+      NEXT_STEPS+=("Grok CLI manuell installieren: curl -fsSL https://x.ai/cli/install.sh | SHELL=/bin/sh bash")
+    fi
+  fi
 fi
 
 # ==============================================================================
@@ -1063,6 +1108,9 @@ next "GitHub anmelden: gh auth login  (GitHub.com, HTTPS, Login with a web brows
 next "Claude Code anmelden: 'claude' starten, Browser-Login abschliessen; prüfen mit: claude doctor"
 if [[ $WANT_CODEX -eq 1 ]]; then
   next "Codex CLI anmelden: 'codex' starten und 'Sign in with ChatGPT' wählen."
+fi
+if [[ $WANT_GROK -eq 1 ]]; then
+  next "Grok CLI anmelden: grok login"
 fi
 next "Ein Projekt in VS Code öffnen: cd ~/code/<projekt> && code .  (installiert beim ersten Mal den VS-Code-Server)"
 next "Prüfen: zsh --version, pyenv version, uv --version, ruff --version, node --version, claude --version, gh --version"

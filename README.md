@@ -17,7 +17,7 @@ Dieses Repository enthält alles, was ich brauche, um auf einem frischen Windows
 | Git und GitHub | git, GitHub CLI (`gh`), SSH-Key, eigene Aliasse | Login per Browser, Credential-Helper, Pull Requests und Repos direkt aus dem Terminal |
 | Editor | VS Code (Windows) mit WSL-Remote, Extensions aus `packages/vscode-extensions.txt`, Machine-Settings | Editor läuft auf Windows, Code und Werkzeuge in Linux; Ruff, Pylance, Jupyter, Docker vorkonfiguriert |
 | KI-Assistent (primär) | Claude Code: CLI `claude`, VS-Code-Extension, Claude-Desktop-App | Programmieren, Erklären, Refactoring und Tests direkt im Projekt; Einstellungen und `CLAUDE.md` liegen im Repo |
-| KI-Assistent (sekundär) | ChatGPT-App (Windows), Codex CLI `codex`, VS-Code-Extension `openai.chatgpt` | Zweitmeinung, Recherche, dieselbe Aufgabe mit zwei Assistenten vergleichen |
+| KI-Assistent (sekundär) | ChatGPT-App (Windows), Codex CLI `codex`, VS-Code-Extension `openai.chatgpt`; optional Grok CLI `grok` (xAI) | Zweitmeinung, Recherche, dieselbe Aufgabe mit mehreren Assistenten vergleichen |
 | Container | Docker Desktop (Windows) mit WSL-Integration | `docker` und `docker compose` in Ubuntu, ohne eigenen Docker-Daemon in WSL |
 | Terminal-Werkzeuge | ripgrep, fd, bat, jq, tree, htop, tmux, direnv | Schneller suchen, hübscher anzeigen, projektbezogene Umgebungsvariablen |
 | Konfiguration | Symlinks aus diesem Repo für zsh, Git, SSH, VS Code, Claude Code, Codex sowie `/etc/wsl.conf` | Eine Quelle der Wahrheit: eine Änderung im Repo gilt nach `git pull` auf jeder Maschine |
@@ -95,7 +95,7 @@ Sollen auch neue Pakete oder Werkzeuge installiert werden (zum Beispiel eine neu
 `install.sh` ist ein Bash-Skript für Ubuntu 22.04/24.04 unter WSL 2. Unter anderen Distributionen bricht es mit einer klaren Meldung ab; ohne WSL läuft es mit einer Warnung weiter. Es darf **nicht** als root gestartet werden. `sudo` wird nur für apt, die Locale und `/etc/wsl.conf` gebraucht und einmal nach den Fragen abgefragt. Jeder Schritt prüft zuerst, ob er schon erledigt ist, und meldet dann „übersprungen (bereits vorhanden)".
 
 1. **Vorprüfungen** – Ubuntu/Debian, nicht root, WSL-Erkennung, `curl` und `git` vorhanden (sonst Hinweis auf `bootstrap.sh`).
-2. **Fragen stellen** – Git-Name und E-Mail (Vorgabe: bestehende Werte aus `git config --global`), Codex CLI installieren? (Vorgabe: Ja), `/etc/wsl.conf` schreiben? Alle Fragen kommen **vor** den langen Installationen; mit `-y` werden die Vorgaben genommen.
+2. **Fragen stellen** – Git-Name und E-Mail (Vorgabe: bestehende Werte aus `git config --global`), Codex CLI installieren? (Vorgabe: Ja), Grok CLI installieren? (Vorgabe: Nein), `/etc/wsl.conf` schreiben? Alle Fragen kommen **vor** den langen Installationen; mit `-y` werden die Vorgaben genommen.
 3. **apt** – offizielles GitHub-CLI-Apt-Repo einrichten (falls es fehlt), `apt-get update`, dann alle Pakete aus `packages/apt.txt` installieren (Basis-Werkzeuge, `gh`, alle Build-Abhängigkeiten für pyenv) und die Locale `en_US.UTF-8` erzeugen.
 4. **zsh** – oh-my-zsh unbeaufsichtigt installieren, Plugins `zsh-autosuggestions` und `zsh-syntax-highlighting` klonen, Login-Shell auf zsh umstellen (`chsh` fragt dabei nach deinem Passwort).
 5. **Python** – pyenv (inklusive pyenv-virtualenv) installieren, Python `3.12` kompilieren (dauert einige Minuten) und als `pyenv global` setzen.
@@ -140,6 +140,8 @@ Alle Flags lassen sich kombinieren.
 | `--skip-vscode` | Schritt 9 (VS-Code-Extensions) überspringen |
 | `--skip-wslconf` | Schritt 11 (`/etc/wsl.conf`) überspringen |
 | `--no-codex` | Codex CLI nicht installieren und nicht danach fragen; `~/.codex/config.toml` wird nur angelegt, wenn Codex bereits installiert ist (Standard: fragen, Vorgabe Ja) |
+| `--grok` | Grok CLI (xAI) ohne Rückfrage installieren (Standard: fragen, Vorgabe Nein) |
+| `--no-grok` | Grok CLI nicht installieren und nicht danach fragen |
 | `--dry-run` | Alle Aktionen nur anzeigen (`[dry-run] befehl ...`), nichts ausführen; braucht weder sudo noch Internet |
 | `-h`, `--help` | Hilfe anzeigen (deutsch) |
 
@@ -256,7 +258,7 @@ Auf den anderen Rechnern anschliessend `dotfiles-update` ausführen (Weg C).
 | Verhalten von Claude Code | `claude/CLAUDE.md`, `claude/rules/*.md`, `claude/settings.json` | neue Claude-Sitzung starten |
 | Nur für diese eine Maschine | `~/.zshrc.local`, `~/.gitconfig.local` | nichts, diese Dateien sind ignoriert |
 
-Für die installierten Programme selbst gibt es die Funktion `update-all` aus `zsh/zshrc`: Sie aktualisiert apt-Pakete, uv und die uv-Tools, Claude Code, Codex CLI und oh-my-zsh in einem Rutsch.
+Für die installierten Programme selbst gibt es die Funktion `update-all` aus `zsh/zshrc`: Sie aktualisiert apt-Pakete, uv und die uv-Tools, Claude Code, Codex CLI, Grok CLI und oh-my-zsh in einem Rutsch.
 
 ### Symlink-Falle
 

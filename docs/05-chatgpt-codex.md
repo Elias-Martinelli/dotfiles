@@ -264,10 +264,40 @@ Anbieter, um Antworten zu erzeugen. Deshalb gilt für Claude Code und Codex glei
 - **Was im Repo ist, ist öffentlich lesbar, sobald das Repo öffentlich ist.** `claude/CLAUDE.md` und
   `codex/config.toml` enthalten darum nur Arbeitsweise und Konfiguration, nie Zugangsdaten.
 
+## Grok CLI (xAI, optional)
+
+Grok ist der KI-Assistent von xAI. Die Grok CLI funktioniert ähnlich wie Claude Code und Codex: Sie arbeitet im
+Terminal in deinem Projektordner. Sie ist bei uns eine **weitere, optionale Zweitmeinung** und wird nur installiert,
+wenn du bei der Installer-Frage „Ja" sagst oder `./install.sh --grok` startest.
+
+Der Installer ruft das offizielle Skript so auf:
+
+```bash
+curl -fsSL https://x.ai/cli/install.sh | SHELL=/bin/sh bash
+```
+
+`SHELL=/bin/sh` ist Absicht: Ohne diesen Zusatz hängt das Grok-Skript einen PATH-Block an deine `~/.zshrc` an
+und folgt dabei dem Symlink bis in `zsh/zshrc` im Repo (samt Sicherungsdatei im Repo-Ordner). Unsere `zsh/zshrc`
+nimmt `~/.grok/bin` und die Grok-Completion schon selbst auf. Das Programm liegt in `~/.grok/bin/grok`, dazu legt
+der Installer Links `grok` und `agent` in `~/.local/bin` an.
+
+| Befehl | Wirkung |
+|---|---|
+| `grok login` | Einmalig anmelden (Browser) |
+| `grok` | Interaktive Sitzung im aktuellen Ordner |
+| `grok "aufgabe"` | Sitzung direkt mit einer Aufgabe starten |
+| `grok -c` | Letzte Sitzung in diesem Ordner fortsetzen |
+| `grok doctor` | Terminal-Unterstützung prüfen |
+| `grok update` | Auf die neueste Version aktualisieren (macht auch `update-all`) |
+
+Konfiguration und Anmeldedaten liegen in `~/.grok/` und gehören **nicht** ins Repo. Für den Datenschutz gilt
+dasselbe wie oben: Grok schickt deinen Code an xAI.
+
 ## Weiterführend
 
 - Codex CLI, Installation und Login: <https://learn.chatgpt.com/docs/codex/cli> und <https://learn.chatgpt.com/docs/auth>
 - `codex exec` für Skripte: <https://learn.chatgpt.com/docs/non-interactive-mode>
 - Konfigurationsreferenz für `config.toml`: <https://developers.openai.com/codex/config-reference>
 - VS-Code-Extension: <https://marketplace.visualstudio.com/items?itemName=openai.chatgpt>
+- Grok CLI: Installer <https://x.ai/cli/install.sh>, Hilfe mit `grok --help`
 - Claude Code als Gegenstück: [04-claude-code.md](04-claude-code.md)

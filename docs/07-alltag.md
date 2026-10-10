@@ -110,6 +110,7 @@ Was passiert, in dieser Reihenfolge:
 | uv und uv-Tools | `uv self update`, `uv tool upgrade --all` | aktualisiert auch ruff und pre-commit |
 | Claude Code | `claude update` | nur wenn `claude` installiert ist |
 | Codex CLI | `curl -fsSL https://chatgpt.com/codex/install.sh \| CODEX_NON_INTERACTIVE=1 sh` | nur wenn `codex` installiert ist; der Installer ist gleichzeitig der Updater, `CODEX_NON_INTERACTIVE=1` verhindert seine Rückfrage „Start Codex now?" |
+| Grok CLI | `grok update` | nur wenn `grok` installiert ist |
 | oh-my-zsh | `omz update` | läuft zuletzt, weil oh-my-zsh die Shell bei Änderungen neu startet |
 
 Nicht enthalten, weil selten nötig oder anderswo geregelt:

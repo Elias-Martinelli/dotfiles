@@ -103,6 +103,7 @@ Alle Fragen kommen in **Schritt 2, vor den langen Installationen**. Du beantwort
 | **Git-Name** | dein bestehender `git config --global user.name`, sonst leer | Vor- und Nachname, so wie er in deinen Commits erscheinen soll, z. B. `Peter Muster`. Ohne Vorgabe ist die Antwort Pflicht. |
 | **Git-E-Mail** | dein bestehender `git config --global user.email`, sonst leer | Die E-Mail-Adresse deines GitHub-Kontos. Ohne Vorgabe Pflicht. |
 | **Codex CLI installieren?** | Ja | `Ja`, wenn du ein bezahltes ChatGPT-Konto hast oder Codex später ausprobieren willst. `Nein`, wenn du nur Claude nutzt. Lässt sich jederzeit mit einem weiteren Lauf ohne `--no-codex` nachholen. |
+| **Grok CLI (xAI) installieren?** | Nein | `Ja` nur, wenn du ein Konto bei xAI bzw. X hast und Grok als weitere Zweitmeinung willst. Einsteiger lassen die Vorgabe. Nachholen mit `./install.sh --grok`. |
 | **/etc/wsl.conf schreiben?** | Ja (nur unter WSL) | `Ja`. Die Datei schaltet systemd ein und setzt dich als Standardbenutzer. Enthält `/etc/wsl.conf` schon `systemd=true`, wird nichts geändert. |
 
 Name und E-Mail landen **nicht** im Repo, sondern in `~/.gitconfig.local`, die der Installer aus `git/gitconfig.local.example` erzeugt. Existiert die Datei schon, bleibt sie unangetastet.
@@ -132,6 +133,8 @@ Alle Flags lassen sich kombinieren.
 | `--skip-vscode` | Schritt 9 (VS-Code-Extensions) überspringen |
 | `--skip-wslconf` | Schritt 11 (`/etc/wsl.conf`) überspringen |
 | `--no-codex` | Codex CLI nicht installieren und nicht danach fragen |
+| `--grok` | Grok CLI (xAI) ohne Rückfrage installieren |
+| `--no-grok` | Grok CLI nicht installieren und nicht danach fragen |
 | `--dry-run` | Alle Aktionen nur anzeigen (`[dry-run] befehl ...`), nichts ausführen, kein sudo, kein Internet nötig |
 | `-h`, `--help` | Hilfe anzeigen |
 
@@ -161,7 +164,7 @@ Jeder Schritt meldet sich mit einer Überschrift wie `──── Schritt 1/12:
 | 5 | Python | pyenv (mit pyenv-virtualenv) installieren, Python `3.12` **kompilieren** (dauert einige Minuten), als `pyenv global` setzen. | `--skip-python` |
 | 6 | uv | uv installieren, dann `uv tool install` für jede Zeile aus `packages/uv-tools.txt` (ruff, pre-commit). | `--skip-python` überspringt nur Schritt 5; uv läuft immer, ausser mit `--links-only` |
 | 7 | Node | nvm installieren, aktuelle LTS-Version installieren und als Standard setzen. | `--skip-node` |
-| 8 | KI-Werkzeuge | Claude Code nativ nach `~/.local/bin/claude`; optional Codex CLI. Beides ohne sudo. | `--skip-ai`, `--no-codex` |
+| 8 | KI-Werkzeuge | Claude Code nativ nach `~/.local/bin/claude`; optional Codex CLI und Grok CLI. Alles ohne sudo. | `--skip-ai`, `--no-codex`, `--no-grok` |
 | 9 | VS Code | Nur wenn `code` in Ubuntu erreichbar ist: Extensions aus `packages/vscode-extensions.txt` installieren. Sonst Hinweis, VS Code auf Windows zu installieren, einmal `code .` auszuführen und später `./install.sh --skip-apt --skip-python --skip-node --skip-ai` zu starten. | `--skip-vscode` |
 | 10 | Verknüpfen | Symlinks von `~` ins Repo setzen (Tabelle unten). Läuft auch bei `--links-only`. | – |
 | 11 | wsl.conf | Nur unter WSL und nur mit Zustimmung: `wsl/wsl.conf` mit deinem Benutzernamen nach `/etc/wsl.conf` (sudo). | `--skip-wslconf` |

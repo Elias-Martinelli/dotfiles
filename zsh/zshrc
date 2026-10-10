@@ -9,9 +9,16 @@
 # Doppelte PATH-Einträge automatisch entfernen (zsh hält PATH und das Array path synchron).
 typeset -U PATH path
 
-# ~/.local/bin: hier landen uv, ruff (uv tool), claude und codex.
+# ~/.local/bin: hier landen uv, ruff (uv tool), claude, codex und der Link auf grok.
 # Ersetzt das alte `. "$HOME/.local/bin/env"`, das der uv-Installer anhängt.
 export PATH="$HOME/.local/bin:$PATH"
+
+# Grok CLI (optional): Binary und zsh-Completion liegen unter ~/.grok. Ersetzt den Block, den der
+# Grok-Installer sonst selbst an die zshrc hängt. fpath muss vor oh-my-zsh (compinit) stehen.
+if [[ -d $HOME/.grok/bin ]]; then
+  export PATH="$HOME/.grok/bin:$PATH"
+  [[ -d $HOME/.grok/completions/zsh ]] && fpath=("$HOME/.grok/completions/zsh" $fpath)
+fi
 
 # ---------------------------------------------------------------------------
 # oh-my-zsh: Theme, Plugins, Einstellungen (müssen VOR dem Laden gesetzt sein)
@@ -165,7 +172,7 @@ command -v clip.exe >/dev/null 2>&1 && alias pbcopy='clip.exe'         # `cat da
 (( $+commands[batcat] && ! $+commands[bat] )) && alias bat='batcat'
 
 # ---------------------------------------------------------------------------
-# update-all: alles auf einmal aktualisieren (apt, uv + uv-Tools, Claude Code, Codex CLI, oh-my-zsh)
+# update-all: alles auf einmal aktualisieren (apt, uv + uv-Tools, Claude Code, Codex CLI, Grok CLI, oh-my-zsh)
 # ---------------------------------------------------------------------------
 _update_all_step() { printf '\n\033[1;34m==> %s\033[0m\n' "$1"; }
 
@@ -188,6 +195,11 @@ update-all() {
     _update_all_step "Codex CLI (der Installer-Einzeiler aktualisiert auf die neueste Version)"
     # CODEX_NON_INTERACTIVE=1: sonst fragt der Installer am Ende «Start Codex now?» und wartet.
     curl -fsSL https://chatgpt.com/codex/install.sh | CODEX_NON_INTERACTIVE=1 sh
+  fi
+
+  if command -v grok >/dev/null 2>&1; then
+    _update_all_step "Grok CLI"
+    grok update
   fi
 
   printf '\n✅ Fertig. Wenn oh-my-zsh gleich Änderungen findet, startet es die Shell automatisch neu.\n'
